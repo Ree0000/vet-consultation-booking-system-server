@@ -13,7 +13,7 @@ export const updateProfile = async (req, res, next) => {
 
     // Validation
     if (!name || !email || !phone) {
-      throw new AppError('Please provide all required fields', 400);
+      throw new AppError('Mohon lengkapi seluruh data yang diperlukan', 400);
     }
 
     // Check if email is already taken by another user
@@ -23,7 +23,7 @@ export const updateProfile = async (req, res, next) => {
       });
 
       if (existingUser && existingUser.id !== req.user.id) {
-        throw new AppError('Email is already in use', 400);
+        throw new AppError('Alamat email sudah digunakan', 400);
       }
     }
 

@@ -23,11 +23,11 @@ export const register = async (req, res, next) => {
 
     // Validation
     if (!name || !email || !phone || !password) {
-      throw new AppError('Please provide all required fields', 400);
+      throw new AppError('Harap isi semua kolom yang ada', 400);
     }
 
     if (password.length < 6) {
-      throw new AppError('Password must be at least 6 characters', 400);
+      throw new AppError('Kata sandi harus terdiri minimal 6 karakter', 400);
     }
 
     // Check if user exists
@@ -109,7 +109,7 @@ export const login = async (req, res, next) => {
         success: true,
         message: 'Admin login successful',
         data: {
-          user: adminWithoutPassword, // Use 'user' key for consistency
+          user: adminWithoutPassword,
           token,
           role: 'admin'
         }
@@ -194,7 +194,6 @@ export const forgotPassword = async (req, res, next) => {
     });
 
     if (!user) {
-      // Don't reveal if email exists or not for security
       return res.status(200).json({
         success: true,
         message: 'If the email exists, a password reset link has been sent'
@@ -205,7 +204,7 @@ export const forgotPassword = async (req, res, next) => {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
-    // Store token in database (expires in 1 hour)
+    // (expires in 1 hour)
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
     await prisma.user.update({

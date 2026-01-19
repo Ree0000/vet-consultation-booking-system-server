@@ -36,7 +36,7 @@ export const register = async (req, res, next) => {
     });
 
     if (existingUser) {
-      throw new AppError('User with this email already exists', 400);
+      throw new AppError('Pengguna dengan alamat email ini sudah ada', 400);
     }
 
     // Hash password
@@ -81,7 +81,7 @@ export const login = async (req, res, next) => {
 
     // Validation
     if (!email || !password) {
-      throw new AppError('Please provide email and password', 400);
+      throw new AppError('Harap isi email dan kata sandi Anda', 400);
     }
 
     // Check if admin first
@@ -94,7 +94,7 @@ export const login = async (req, res, next) => {
       const isPasswordValid = await bcrypt.compare(password, admin.password);
 
       if (!isPasswordValid) {
-        throw new AppError('Invalid credentials', 401);
+        throw new AppError('Kata sandi tidak sesuai', 401);
       }
 
       const token = jwt.sign(
@@ -122,14 +122,14 @@ export const login = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new AppError('Invalid credentials', 401);
+      throw new AppError('Akun tidak ditemukan', 401);
     }
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new AppError('Invalid credentials', 401);
+      throw new AppError('Kata sandi tidak sesuai', 401);
     }
 
     // Generate token
@@ -165,7 +165,7 @@ export const getMe = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new AppError('User not found', 404);
+      throw new AppError('Akun tidak ditemukan', 404);
     }
 
     res.status(200).json({
@@ -185,7 +185,7 @@ export const forgotPassword = async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
-      throw new AppError('Please provide your email', 400);
+      throw new AppError('Harap berikan alamat email Anda', 400);
     }
 
     // Find user
@@ -251,11 +251,11 @@ export const resetPassword = async (req, res, next) => {
     const { password } = req.body;
 
     if (!password) {
-      throw new AppError('Please provide a new password', 400);
+      throw new AppError('Masukan kata sandi baru', 400);
     }
 
     if (password.length < 6) {
-      throw new AppError('Password must be at least 6 characters', 400);
+      throw new AppError('Kata sandi harus terdiri minimal 6 karakter', 400);
     }
 
     // Hash the token from URL
@@ -272,7 +272,7 @@ export const resetPassword = async (req, res, next) => {
     });
 
     if (!user) {
-      throw new AppError('Invalid or expired reset token', 400);
+      throw new AppError('Tautan reset sudah tidak berlaku', 400);
     }
 
     // Hash new password

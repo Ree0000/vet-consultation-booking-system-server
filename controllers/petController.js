@@ -35,7 +35,7 @@ export const getPet = async (req, res, next) => {
     });
 
     if (!pet) {
-      throw new AppError('Pet not found', 404);
+      throw new AppError('Hewan peliharaan tidak ditemukan', 404);
     }
 
     res.status(200).json({
@@ -56,7 +56,7 @@ export const createPet = async (req, res, next) => {
 
     // Validation
     if (!name || !species) {
-      throw new AppError('Please provide pet name and species', 400);
+      throw new AppError('Mohon berikan nama dan spesies hewan peliharaan', 400);
     }
 
     const pet = await prisma.pet.create({
@@ -95,7 +95,7 @@ export const updatePet = async (req, res, next) => {
     });
 
     if (!existingPet) {
-      throw new AppError('Pet not found', 404);
+      throw new AppError('Hewan peliharaan tidak diemukan', 404);
     }
 
     const pet = await prisma.pet.update({
@@ -132,7 +132,7 @@ export const deletePet = async (req, res, next) => {
     });
 
     if (!pet) {
-      throw new AppError('Pet not found', 404);
+      throw new AppError('Hewan peliharaan tidak ditemukan', 404);
     }
 
     await prisma.pet.delete({

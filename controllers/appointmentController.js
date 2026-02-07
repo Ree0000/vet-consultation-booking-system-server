@@ -95,7 +95,7 @@ export const createAppointment = async (req, res, next) => {
     // Check if the appointment time is in the future
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     if (appointmentDateTime < new Date()) {
-      throw new AppError('Appointment must be in the future', 400);
+      throw new AppError('Janji temu harus di masa depan', 400);
     }
 
     // Get available vet for this time slot
@@ -293,7 +293,8 @@ export const getAvailableSlots = async (req, res, next) => {
       data: {
         date,
         availableSlots,
-        totalSlots: slots.length
+        // totalSlots: slots.length //total slots only
+        totalAvailableSlots: availableSlots.length
       }
     });
   } catch (error) {

@@ -1,0 +1,27 @@
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Database (Prisma)
+DATABASE_URL="postgresql://ree:reepostgres11@localhost:5432/vet_appointment_db"
+
+# Database (pg)
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=vet_appointment_db
+DB_USER=ree
+DB_PASSWORD=reepostgres11
+
+# JWT (development)
+JWT_SECRET=Ben/wDXNtZFYcUDRYL9/Tca3o7zKWehSByeNNyK9d29DmJYmGM4tmrxevPrmeWWNyM0EVd3eeNuxrJeOubolMg==
+JWT_EXPIRE=7d
+
+# Email (Nodemailer)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=slyverwyvern@gmail.com
+EMAIL_PASSWORD=dzzs zgil lhzu awqh
+
+# CORS
+CLIENT_URL=http://localhost:5173
+# CLIENT_URL=https://jeniffer-trimerous-enid.ngrok-free.dev

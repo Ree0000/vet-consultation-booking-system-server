@@ -95,10 +95,10 @@ export const createAppointment = async (req, res, next) => {
     // Check if the appointment time is in the future
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     if (appointmentDateTime < new Date()) {
-      throw new AppError('Janji temu harus di masa depan', 400);
+      throw new AppError('Appointment must be in the future', 400);
     }
 
-    // Get available vet for this time slot
+    // Get booked vets for this time slot (including offline and blocked slots)
     const bookedVets = await prisma.appointment.findMany({
       where: {
         appointmentDate: new Date(appointmentDate),
@@ -131,6 +131,7 @@ export const createAppointment = async (req, res, next) => {
         appointmentTime,
         reason: reason || null,
         paymentMethod,
+        bookingType: 'online', // Explicitly set as online booking
         status: 'scheduled'
       },
       include: {
@@ -262,7 +263,7 @@ export const getAvailableSlots = async (req, res, next) => {
       slots.push(`${hour.toString().padStart(2, '0')}:30`);
     }
 
-    // Get booked appointments for this date
+    // Get booked appointments for this date (including offline and blocked)
     const appointmentDate = new Date(date);
     const bookedAppointments = await prisma.appointment.findMany({
       where: {
@@ -293,8 +294,7 @@ export const getAvailableSlots = async (req, res, next) => {
       data: {
         date,
         availableSlots,
-        // totalSlots: slots.length //total slots only
-        totalAvailableSlots: availableSlots.length
+        totalSlots: slots.length
       }
     });
   } catch (error) {

@@ -1,5 +1,4 @@
-// Prisma Schema for Vet Appointment System
-
+// Prisma Schema for Vet Appointment System - UPDATED
 generator client {
   provider = "prisma-client-js"
 }
@@ -57,19 +56,28 @@ model Veterinarian {
 
 model Appointment {
   id              Int      @id @default(autoincrement())
-  userId          Int
-  petId           Int
+  userId          Int? // NULLABLE for offline bookings
+  petId           Int? // NULLABLE for offline bookings
   vetId           Int
   appointmentDate DateTime
   appointmentTime String
   reason          String?
-  paymentMethod   String // 'pay_now' or 'pay_later'
-  status          String   @default("scheduled") // 'scheduled', 'completed', 'cancelled'
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  paymentMethod   String? // NULLABLE (not needed for blocked slots)
+  status          String   @default("scheduled") // 'scheduled', 'completed', 'cancelled', 'no-show'
 
-  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  pet  Pet          @relation(fields: [petId], references: [id], onDelete: Cascade)
+  // NEW FIELDS for manual booking feature
+  bookingType        String  @default("online") // 'online', 'offline', 'blocked'
+  offlineClientName  String? // For offline bookings
+  offlineClientPhone String? // For offline bookings
+  offlinePetName     String? // For offline bookings
+  offlinePetType     String? // For offline bookings (species)
+  adminNotes         String? // For any admin notes
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pet  Pet?         @relation(fields: [petId], references: [id], onDelete: Cascade)
   vet  Veterinarian @relation(fields: [vetId], references: [id], onDelete: Restrict)
 
   @@map("appointments")
